@@ -51,4 +51,10 @@ class QueryItemWranglerTests: XCTestCase {
         XCTAssertFalse(wrangler[QueryItemKey<Bool>("flag")])
         XCTAssertTrue(wrangler[QueryItemKey<Bool>("flag2")])
     }
+
+    func testEquality() {
+        let wrangler = QueryItemWrangler(items: components.queryItems)
+        let other = QueryItemWrangler(items: components.queryItems)
+        XCTAssertTrue(wrangler == other)
+    }
 }

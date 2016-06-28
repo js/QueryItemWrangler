@@ -101,6 +101,12 @@ extension QueryItemWrangler: CustomStringConvertible {
     }
 }
 
+extension QueryItemWrangler: Equatable {}
+
+public func ==(lhs: QueryItemWrangler, rhs: QueryItemWrangler) -> Bool {
+    return lhs.queryItems == rhs.queryItems
+}
+
 private extension QueryItemWrangler {
     private func queryItemForKey(key: String) -> NSURLQueryItem? {
         return queryItems.filter({ $0.name == key }).first
