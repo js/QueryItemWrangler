@@ -33,7 +33,7 @@ wrangler["str"] // => Optional("baz"))
 To work with other types, the `QueryItemKey` struct can be used to represent the item key/name and the type of its value:
 
 ```swift
-let key = QueryItemKey<Int?>("num") // The type of "num" item is `Int?`
+let key = QueryItemKey<Int?>("num") // The type of the item named "num" is `Int?`
 wrangler[key] // => Optional(42)
 wrangler[key] = 84
 wrangler[key] // => Optional(84)
@@ -56,9 +56,10 @@ wrangler[QueryItemKey<Bool>("flag2")] // => true
 
 To update the originating NSURLComponents, simply assign to the queryItems property:
 ```swift
-components.queryItems = wranger.queryItems
+components.queryItems = wrangler.queryItems
 ```
 
+### Supported types
 
 `QueryItemKey` can be used as subscripting in `QueryItemWrangler` for the following types:
 
