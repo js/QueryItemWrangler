@@ -10,27 +10,45 @@ import XCTest
 @testable import QueryItemWrangler
 
 class QueryItemWranglerTests: XCTestCase {
-    
+    let url = NSURL(string: "https://example.com?str=foo%20bar&num=42&flag=1&flag2=true")!
+    var components: NSURLComponents!
+
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testStringValues() {
+        var wrangler = QueryItemWrangler(items: components.queryItems)
+        XCTAssertEqual(wrangler["str"], Optional("foo bar"))
+        wrangler["str"] = "foo"
+        XCTAssertEqual(wrangler["str"], Optional("foo"))
+
+        XCTAssertEqual(wrangler[QueryItemKey<String?>("str")], Optional("foo"))
+        wrangler[QueryItemKey<String?>("str")] = "baz"
+        XCTAssertEqual(wrangler[QueryItemKey<String?>("str")], Optional("baz"))
+        XCTAssertEqual(wrangler[QueryItemKey<String?>("nonexistant")], nil)
+
+        XCTAssertEqual(wrangler[QueryItemKey<String>("str")], "baz")
+        XCTAssertEqual(wrangler[QueryItemKey<String>("nonexistant")], "")
     }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+
+    func testIntValues() {
+        var wrangler = QueryItemWrangler(items: components.queryItems)
+        XCTAssertEqual(wrangler[QueryItemKey<Int?>("num")], Optional(42))
+        wrangler[QueryItemKey<Int?>("num")] = 84
+        XCTAssertEqual(wrangler[QueryItemKey<Int?>("num")], Optional(84))
+        XCTAssertEqual(wrangler[QueryItemKey<Int?>("nonexistnat")], nil)
+
+        XCTAssertEqual(wrangler[QueryItemKey<Int>("num")], 84)
+        XCTAssertEqual(wrangler[QueryItemKey<Int>("nonexistnat")], 0)
     }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
+
+    func testBoolValues() {
+        var wrangler = QueryItemWrangler(items: components.queryItems)
+        XCTAssertTrue(wrangler[QueryItemKey<Bool>("flag")])
+        wrangler[QueryItemKey<Bool>("flag")] = false
+        XCTAssertFalse(wrangler[QueryItemKey<Bool>("flag")])
+        XCTAssertTrue(wrangler[QueryItemKey<Bool>("flag2")])
     }
-    
 }

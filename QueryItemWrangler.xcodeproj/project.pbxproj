@@ -10,6 +10,7 @@
 		043167701D2310EE00BB6889 /* QueryItemWrangler.h in Headers */ = {isa = PBXBuildFile; fileRef = 0431676F1D2310EE00BB6889 /* QueryItemWrangler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		043167771D2310EE00BB6889 /* QueryItemWrangler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0431676C1D2310EE00BB6889 /* QueryItemWrangler.framework */; };
 		0431677C1D2310EE00BB6889 /* QueryItemWranglerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0431677B1D2310EE00BB6889 /* QueryItemWranglerTests.swift */; };
+		043167881D23117300BB6889 /* QueryItemWrangler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043167871D23117300BB6889 /* QueryItemWrangler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,8 @@
 		043167761D2310EE00BB6889 /* QueryItemWranglerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QueryItemWranglerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0431677B1D2310EE00BB6889 /* QueryItemWranglerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryItemWranglerTests.swift; sourceTree = "<group>"; };
 		0431677D1D2310EE00BB6889 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		043167871D23117300BB6889 /* QueryItemWrangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueryItemWrangler.swift; path = Source/QueryItemWrangler.swift; sourceTree = SOURCE_ROOT; };
+		043167891D2317C800BB6889 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +56,8 @@
 		043167621D2310EE00BB6889 = {
 			isa = PBXGroup;
 			children = (
+				043167891D2317C800BB6889 /* README.md */,
+				043167861D23115400BB6889 /* Source */,
 				0431676E1D2310EE00BB6889 /* QueryItemWrangler */,
 				0431677A1D2310EE00BB6889 /* QueryItemWranglerTests */,
 				0431676D1D2310EE00BB6889 /* Products */,
@@ -84,6 +89,14 @@
 				0431677D1D2310EE00BB6889 /* Info.plist */,
 			);
 			path = QueryItemWranglerTests;
+			sourceTree = "<group>";
+		};
+		043167861D23115400BB6889 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				043167871D23117300BB6889 /* QueryItemWrangler.swift */,
+			);
+			name = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				043167881D23117300BB6889 /* QueryItemWrangler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +324,7 @@
 		043167811D2310EF00BB6889 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -320,12 +335,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.frosthaus.QueryItemWrangler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		043167821D2310EF00BB6889 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -378,6 +395,7 @@
 				043167821D2310EF00BB6889 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		043167831D2310EF00BB6889 /* Build configuration list for PBXNativeTarget "QueryItemWranglerTests" */ = {
 			isa = XCConfigurationList;
@@ -386,6 +404,7 @@
 				043167851D2310EF00BB6889 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
