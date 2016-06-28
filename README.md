@@ -25,8 +25,9 @@ var wrangler = QueryItemWrangler(items: components.queryItems)
 The simplest API is for reading and writing strings:
 
 ```swift
-wrangler["str"] // => Optional("foo")) 
-wrangler["str"] = "bar"
+wrangler["str"] // => Optional("foo bar"))
+wrangler["str"] = "baz"
+wrangler["str"] // => Optional("baz"))
 ```
 
 To work with other types, the `QueryItemKey` struct can be used to represent the item key/name and the type of its value:
