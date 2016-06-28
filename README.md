@@ -33,7 +33,7 @@ wrangler["str"] // => Optional("baz"))
 To work with other types, the `QueryItemKey` struct can be used to represent the item key/name and the type of its value:
 
 ```swift
-let key = QueryItemKey<Int?>("num")
+let key = QueryItemKey<Int?>("num") // The type of "num" item is `Int?`
 wrangler[key] // => Optional(42)
 wrangler[key] = 84
 wrangler[key] // => Optional(84)
