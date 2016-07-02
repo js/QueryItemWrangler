@@ -1,6 +1,29 @@
 # QueryItemWrangler
 
-A type-safe and friendly Swift API for query items
+A type-safe and friendly Swift API for query items.
+
+`NSURLComponents` has easy access to query items, the problem is they're stored in an optional array of objects. QueryItemWrangler makes it easy to query for query item values in a type-safe manner.
+
+Instead of jumping through these hoops:
+
+```swift
+let url = NSURL(string: "https://example.com/things?id=42")!
+let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+
+if let item =  components.queryItems?.filter({ $0.name == "id" }).first {
+    if let value = item.value, let intValue = Int(value) {
+        print("Finally, we got that int: \(intValue)") // intValue is 42
+    }
+}
+```
+
+You can easily get the same value like this:
+
+```swift
+let wrangler = QueryItemWrangler(items: components.queryItems)
+let value = wrangler[QueryItemKey<Int>("id")] // => 42
+print("That was too easy to get \(value)")
+```
 
 ## NSURLComponent.queryItem
 
