@@ -30,7 +30,7 @@ public struct QueryItemWrangler {
         self.queryItems = items ?? []
     }
 
-    subscript(key: String) -> String? {
+    public subscript(key: String) -> String? {
         get {
             return queryItemForKey(key)?.value
         }
@@ -39,7 +39,7 @@ public struct QueryItemWrangler {
         }
     }
 
-    subscript(key: QueryItemKey<String?>) -> String? {
+    public subscript(key: QueryItemKey<String?>) -> String? {
         get {
             return self[key.key]
         }
@@ -48,7 +48,7 @@ public struct QueryItemWrangler {
         }
     }
 
-    subscript(key: QueryItemKey<String>) -> String {
+    public subscript(key: QueryItemKey<String>) -> String {
         // returns an empty String ("") if the key is not present in the query items
         get {
             let optionalKey = QueryItemKey<String?>(key.key)
@@ -60,7 +60,7 @@ public struct QueryItemWrangler {
         }
     }
 
-    subscript(key: QueryItemKey<Int?>) -> Int? {
+    public subscript(key: QueryItemKey<Int?>) -> Int? {
         get {
             return self[key.key].flatMap({ Int($0) })
         }
@@ -73,7 +73,7 @@ public struct QueryItemWrangler {
         }
     }
 
-    subscript(key: QueryItemKey<Int>) -> Int {
+    public subscript(key: QueryItemKey<Int>) -> Int {
         // returns 0 if the key is not present in the query items
         get {
             let optionalKey = QueryItemKey<Int?>(key.key)
@@ -85,7 +85,7 @@ public struct QueryItemWrangler {
         }
     }
 
-    subscript(key: QueryItemKey<Bool>) -> Bool {
+    public subscript(key: QueryItemKey<Bool>) -> Bool {
         get {
             if let value = self[key.key] {
                 return ["1", "true"].contains(value)
