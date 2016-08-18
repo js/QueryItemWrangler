@@ -8,8 +8,14 @@
 
 import Foundation
 
-// TODO can we constrain to the supported Int?, String? and Bool types?
-public struct QueryItemKey<T> {
+public protocol QueryRepresentable {}
+extension String: QueryRepresentable {}
+extension Int: QueryRepresentable {}
+extension Bool: QueryRepresentable {}
+//extension Optional: QueryRepresentable where Wrapped: QueryRepresentable {}
+extension Optional: QueryRepresentable {}
+
+public struct QueryItemKey<T where T: QueryRepresentable> {
     private let key: String
 
     public init(_ key: String) {
@@ -82,7 +88,6 @@ public struct QueryItemWrangler {
     subscript(key: QueryItemKey<Bool>) -> Bool {
         get {
             if let value = self[key.key] {
-                // FIXME: should "true" (and whatever else) be configurable on the QueryItem somehow?
                 return ["1", "true"].contains(value)
             } else {
                 return false
