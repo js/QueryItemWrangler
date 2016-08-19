@@ -70,13 +70,11 @@ wrangler[QueryItemKey<Int>("num")] // => nil
 Boolean values are either true or false (nil is false):
 
 ```swift
-wrangler[QueryItemKey<Bool>("flag")] // => true
+wrangler[QueryItemKey<Bool>("flag")] // => Optional(true)
 wrangler[QueryItemKey<Bool>("flag")] = false
-wrangler[QueryItemKey<Bool>("flag")] // => false
-wrangler[QueryItemKey<Bool>("flag2")] // => true
+wrangler[QueryItemKey<Bool>("flag")] // => Optional(false)
+wrangler[QueryItemKey<Bool>("flag2")] // => Optional(true)
 ````
-
-If a the item is not present, `false` will still be returned
 
 To update the originating NSURLComponents, simply assign to the queryItems property:
 ```swift

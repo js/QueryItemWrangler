@@ -24,12 +24,16 @@ public struct QueryItemWrangler {
         }
     }
 
-    func get<T: QueryRepresentable>(key: QueryItemKey<T>) -> T? {
+    public func get<T: QueryRepresentable>(key: QueryItemKey<T>) -> T? {
         return self[key.key].flatMap({ T(queryItemValue: $0) })
     }
 
-    mutating func set<T: QueryRepresentable>(key: QueryItemKey<T>, value: T?) {
+    public mutating func set<T: QueryRepresentable>(key: QueryItemKey<T>, value: T?) {
         self[key.key] = value?.queryItemValueRepresentation
+    }
+
+    public func queryItemForKey(key: String) -> NSURLQueryItem? {
+        return queryItems.filter({ $0.name == key }).first
     }
 
     // MARK: Typed Subscripts
@@ -64,22 +68,15 @@ public func ==(lhs: QueryItemWrangler, rhs: QueryItemWrangler) -> Bool {
 }
 
 private extension QueryItemWrangler {
-    private func queryItemForKey(key: String) -> NSURLQueryItem? {
-        return queryItems.filter({ $0.name == key }).first
-    }
-
     private mutating func setQueryItemValue(key: String, value: String?) {
-        removeQueryItemForKey(key)
+        // NSURLQueryItem is immutable, so we have to remove & recreate when updating the value
+        if let item = queryItemForKey(key), let idx = queryItems.indexOf(item) {
+            queryItems.removeAtIndex(idx)
+        }
 
         if let value = value {
             let item = NSURLQueryItem(name: key, value: value)
             queryItems.append(item)
-        }
-    }
-
-    private mutating func removeQueryItemForKey(key: String) {
-        if let item = queryItemForKey(key), let idx = queryItems.indexOf(item) {
-            queryItems.removeAtIndex(idx)
         }
     }
 }

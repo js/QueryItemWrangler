@@ -75,4 +75,18 @@ class QueryItemWranglerTests: XCTestCase {
         let other = QueryItemWrangler(items: components.queryItems)
         XCTAssertTrue(wrangler == other)
     }
+
+    func testQueryItemForKey() {
+        let wrangler = QueryItemWrangler(items: components.queryItems)
+        let item = wrangler.queryItemForKey("num")
+        XCTAssert(item != nil)
+        XCTAssertEqual(item!.name, "num")
+        XCTAssertEqual(item!.value, Optional("42"))
+    }
+
+    func testNillingItemRemovesIt() {
+        var wrangler = QueryItemWrangler(items: components.queryItems)
+        wrangler["num"] = nil
+        XCTAssert(wrangler.queryItemForKey("num") == nil)
+    }
 }
