@@ -8,13 +8,43 @@
 
 import Foundation
 
-public protocol QueryRepresentable {}
-extension String: QueryRepresentable {}
-extension Int: QueryRepresentable {}
-extension Bool: QueryRepresentable {}
+public protocol QueryRepresentable {
+    init?(queryItemValue: String)
+    var queryItemValueRepresentation: String { get }
+}
+
+extension String: QueryRepresentable{
+    public init?(queryItemValue: String) {
+        self.init(queryItemValue)
+    }
+
+    public var queryItemValueRepresentation: String {
+        return self
+    }
+}
+
+extension Int: QueryRepresentable {
+    public init?(queryItemValue: String) {
+        self.init(queryItemValue)
+    }
+
+    public var queryItemValueRepresentation: String {
+        return String(self)
+    }
+}
+
+extension Bool: QueryRepresentable {
+    public init?(queryItemValue: String) {
+        self.init(["1", "true"].contains(queryItemValue))
+    }
+
+    public var queryItemValueRepresentation: String {
+        return self ? "1" : "0"
+    }
+}
 
 public struct QueryItemKey<Key where Key: QueryRepresentable> {
-    private let key: String
+    internal let key: String
 
     public init(_ key: String) {
         self.key = key
@@ -28,8 +58,6 @@ public struct QueryItemWrangler {
         self.queryItems = items ?? []
     }
 
-
-
     public subscript(key: String) -> String? {
         get {
             return queryItemForKey(key)?.value
@@ -39,39 +67,29 @@ public struct QueryItemWrangler {
         }
     }
 
+    func get<T: QueryRepresentable>(key: QueryItemKey<T>) -> T? {
+        return self[key.key].flatMap({ T(queryItemValue: $0) })
+    }
+
+    mutating func set<T: QueryRepresentable>(key: QueryItemKey<T>, value: T?) {
+        self[key.key] = value?.queryItemValueRepresentation
+    }
+
+    // MARK: Typed Subscripts
+
     public subscript(key: QueryItemKey<String>) -> String? {
-        get {
-            return self[key.key]
-        }
-        set {
-            self[key.key] = newValue
-        }
+        get { return get(key) }
+        set { set(key, value: newValue) }
     }
 
     public subscript(key: QueryItemKey<Int>) -> Int? {
-        get {
-            return self[key.key].flatMap({ Int($0) })
-        }
-        set {
-            if let value = newValue {
-                self[key.key] = String(value)
-            } else {
-                self[key.key] = nil
-            }
-        }
+        get { return get(key) }
+        set { set(key, value: newValue) }
     }
 
-    public subscript(key: QueryItemKey<Bool>) -> Bool {
-        get {
-            if let value = self[key.key] {
-                return ["1", "true"].contains(value)
-            } else {
-                return false
-            }
-        }
-        set {
-            self[key.key] = newValue ? "1" : "0"
-        }
+    public subscript(key: QueryItemKey<Bool>) -> Bool? {
+        get { return get(key) }
+        set { set(key, value: newValue) }
     }
 }
 

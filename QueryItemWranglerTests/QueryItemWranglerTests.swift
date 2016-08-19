@@ -17,7 +17,29 @@ class QueryItemWranglerTests: XCTestCase {
         super.setUp()
         components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
     }
-    
+
+    func testGetting() {
+        let wrangler = QueryItemWrangler(items: components.queryItems)
+
+        XCTAssertEqual(wrangler.get(QueryItemKey<String>("str")), Optional("foo bar"))
+        XCTAssertEqual(wrangler.get(QueryItemKey<String>("nope")), nil)
+
+        XCTAssertEqual(wrangler.get(QueryItemKey<Int>("num")), Optional(42))
+        XCTAssertEqual(wrangler.get(QueryItemKey<Int>("nope")), nil)
+
+        XCTAssertEqual(wrangler.get(QueryItemKey<Bool>("flag")), Optional(true))
+        XCTAssertEqual(wrangler.get(QueryItemKey<Bool>("nope")), nil)
+    }
+
+    func testSetting() {
+        var wrangler = QueryItemWrangler(items: components.queryItems)
+
+        wrangler.set(QueryItemKey<String>("stringval"), value: "test")
+        XCTAssertEqual(wrangler.get(QueryItemKey<String>("stringval")), Optional("test"))
+        wrangler.set(QueryItemKey<String>("stringval"), value: nil)
+        XCTAssertEqual(wrangler.get(QueryItemKey<String>("stringval")), nil)
+    }
+
     func testStringValues() {
         var wrangler = QueryItemWrangler(items: components.queryItems)
         XCTAssertEqual(wrangler["str"], Optional("foo bar"))
@@ -40,12 +62,12 @@ class QueryItemWranglerTests: XCTestCase {
 
     func testBoolValues() {
         var wrangler = QueryItemWrangler(items: components.queryItems)
-        XCTAssertTrue(wrangler[QueryItemKey<Bool>("flag")])
+        XCTAssertEqual(wrangler[QueryItemKey<Bool>("flag")], Optional(true))
         wrangler[QueryItemKey<Bool>("flag")] = false
-        XCTAssertFalse(wrangler[QueryItemKey<Bool>("flag")])
-        XCTAssertTrue(wrangler[QueryItemKey<Bool>("flag2")])
+        XCTAssertEqual(wrangler[QueryItemKey<Bool>("flag")], Optional(false))
+        XCTAssertEqual(wrangler[QueryItemKey<Bool>("flag2")], Optional(true))
 
-        XCTAssertFalse(wrangler[QueryItemKey<Bool>("nonexistant")])
+        XCTAssertEqual(wrangler[QueryItemKey<Bool>("nonexistant")], nil)
     }
 
     func testEquality() {
