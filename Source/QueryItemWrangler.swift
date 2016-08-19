@@ -12,10 +12,8 @@ public protocol QueryRepresentable {}
 extension String: QueryRepresentable {}
 extension Int: QueryRepresentable {}
 extension Bool: QueryRepresentable {}
-//extension Optional: QueryRepresentable where Wrapped: QueryRepresentable {}
-extension Optional: QueryRepresentable {}
 
-public struct QueryItemKey<T where T: QueryRepresentable> {
+public struct QueryItemKey<Key where Key: QueryRepresentable> {
     private let key: String
 
     public init(_ key: String) {
@@ -30,6 +28,8 @@ public struct QueryItemWrangler {
         self.queryItems = items ?? []
     }
 
+
+
     public subscript(key: String) -> String? {
         get {
             return queryItemForKey(key)?.value
@@ -39,7 +39,7 @@ public struct QueryItemWrangler {
         }
     }
 
-    public subscript(key: QueryItemKey<String?>) -> String? {
+    public subscript(key: QueryItemKey<String>) -> String? {
         get {
             return self[key.key]
         }
@@ -48,19 +48,7 @@ public struct QueryItemWrangler {
         }
     }
 
-    public subscript(key: QueryItemKey<String>) -> String {
-        // returns an empty String ("") if the key is not present in the query items
-        get {
-            let optionalKey = QueryItemKey<String?>(key.key)
-            return self[optionalKey] ?? ""
-        }
-        set {
-            let optionalKey = QueryItemKey<String?>(key.key)
-            self[optionalKey] = newValue
-        }
-    }
-
-    public subscript(key: QueryItemKey<Int?>) -> Int? {
+    public subscript(key: QueryItemKey<Int>) -> Int? {
         get {
             return self[key.key].flatMap({ Int($0) })
         }
@@ -70,18 +58,6 @@ public struct QueryItemWrangler {
             } else {
                 self[key.key] = nil
             }
-        }
-    }
-
-    public subscript(key: QueryItemKey<Int>) -> Int {
-        // returns 0 if the key is not present in the query items
-        get {
-            let optionalKey = QueryItemKey<Int?>(key.key)
-            return self[optionalKey] ?? 0
-        }
-        set {
-            let optionalKey = QueryItemKey<Int?>(key.key)
-            self[optionalKey] = newValue
         }
     }
 

@@ -21,7 +21,7 @@ You can easily get the same value like this:
 
 ```swift
 let wrangler = QueryItemWrangler(items: components.queryItems)
-let value = wrangler[QueryItemKey<Int>("id")] // => 42
+let value = wrangler[QueryItemKey<Int>("id")] // => Optional(42)
 print("That was too easy to get \(value)")
 ```
 
@@ -56,16 +56,15 @@ wrangler["str"] // => Optional("baz"))
 To work with other types, the `QueryItemKey` struct can be used to represent the item key/name and the type of its value:
 
 ```swift
-let key = QueryItemKey<Int?>("num") // The type of the item named "num" is `Int?`
+let key = QueryItemKey<Int>("num") // The type of the value of the item named "num" is `Int?`
 wrangler[key] // => Optional(42)
 wrangler[key] = 84
 wrangler[key] // => Optional(84)
 
-wrangler[QueryItemKey<Int>("num")] // => 88
+wrangler[QueryItemKey<Int>("num")] // => Optional(88)
 // Non-optional Int's default to 0 if the value is nil
-wrangler[QueryItemKey<Int?>("num")] = nil
-wrangler[QueryItemKey<Int>("num")] // => 0
-wrangler[QueryItemKey<Int?>("num")] // => nil
+wrangler[QueryItemKey<Int>("num")] = nil
+wrangler[QueryItemKey<Int>("num")] // => nil
 ```
 
 Boolean values are either true or false (nil is false):
@@ -76,6 +75,8 @@ wrangler[QueryItemKey<Bool>("flag")] = false
 wrangler[QueryItemKey<Bool>("flag")] // => false
 wrangler[QueryItemKey<Bool>("flag2")] // => true
 ````
+
+If a the item is not present, `false` will still be returned
 
 To update the originating NSURLComponents, simply assign to the queryItems property:
 ```swift

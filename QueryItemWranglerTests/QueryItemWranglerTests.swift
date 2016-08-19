@@ -24,24 +24,18 @@ class QueryItemWranglerTests: XCTestCase {
         wrangler["str"] = "foo"
         XCTAssertEqual(wrangler["str"], Optional("foo"))
 
-        XCTAssertEqual(wrangler[QueryItemKey<String?>("str")], Optional("foo"))
-        wrangler[QueryItemKey<String?>("str")] = "baz"
-        XCTAssertEqual(wrangler[QueryItemKey<String?>("str")], Optional("baz"))
-        XCTAssertEqual(wrangler[QueryItemKey<String?>("nonexistant")], nil)
-
-        XCTAssertEqual(wrangler[QueryItemKey<String>("str")], "baz")
-        XCTAssertEqual(wrangler[QueryItemKey<String>("nonexistant")], "")
+        XCTAssertEqual(wrangler[QueryItemKey<String>("str")], Optional("foo"))
+        wrangler[QueryItemKey<String>("str")] = "baz"
+        XCTAssertEqual(wrangler[QueryItemKey<String>("str")], Optional("baz"))
+        XCTAssertEqual(wrangler[QueryItemKey<String>("nonexistant")], nil)
     }
 
     func testIntValues() {
         var wrangler = QueryItemWrangler(items: components.queryItems)
-        XCTAssertEqual(wrangler[QueryItemKey<Int?>("num")], Optional(42))
-        wrangler[QueryItemKey<Int?>("num")] = 84
-        XCTAssertEqual(wrangler[QueryItemKey<Int?>("num")], Optional(84))
-        XCTAssertEqual(wrangler[QueryItemKey<Int?>("nonexistnat")], nil)
-
-        XCTAssertEqual(wrangler[QueryItemKey<Int>("num")], 84)
-        XCTAssertEqual(wrangler[QueryItemKey<Int>("nonexistnat")], 0)
+        XCTAssertEqual(wrangler[QueryItemKey<Int>("num")], Optional(42))
+        wrangler[QueryItemKey<Int>("num")] = 84
+        XCTAssertEqual(wrangler[QueryItemKey<Int>("num")], Optional(84))
+        XCTAssertEqual(wrangler[QueryItemKey<Int>("nonexistant")], nil)
     }
 
     func testBoolValues() {
@@ -50,6 +44,8 @@ class QueryItemWranglerTests: XCTestCase {
         wrangler[QueryItemKey<Bool>("flag")] = false
         XCTAssertFalse(wrangler[QueryItemKey<Bool>("flag")])
         XCTAssertTrue(wrangler[QueryItemKey<Bool>("flag2")])
+
+        XCTAssertFalse(wrangler[QueryItemKey<Bool>("nonexistant")])
     }
 
     func testEquality() {
