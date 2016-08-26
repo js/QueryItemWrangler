@@ -32,7 +32,7 @@
 		0431677B1D2310EE00BB6889 /* QueryItemWranglerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryItemWranglerTests.swift; sourceTree = "<group>"; };
 		0431677D1D2310EE00BB6889 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		043167871D23117300BB6889 /* QueryItemWrangler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueryItemWrangler.swift; path = Source/QueryItemWrangler.swift; sourceTree = SOURCE_ROOT; };
-		043167891D2317C800BB6889 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		043167891D2317C800BB6889 /* README.md */ = {isa = PBXFileReference; explicitFileType = net.daringfireball.markdown; fileEncoding = 4; path = README.md; sourceTree = "<group>"; };
 		76A0B6D51D66FD1F00FA2E4D /* QueryRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueryRepresentable.swift; path = Source/QueryRepresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 

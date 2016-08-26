@@ -63,8 +63,8 @@ class QueryItemWranglerTests: XCTestCase {
     func testBoolValues() {
         var wrangler = QueryItemWrangler(items: components.queryItems)
         XCTAssertEqual(wrangler[QueryItemKey<Bool>("flag")], Optional(true))
-        wrangler[QueryItemKey<Bool>("flag")] = false
-        XCTAssertEqual(wrangler[QueryItemKey<Bool>("flag")], Optional(false))
+        wrangler[QueryItemKey<Bool>("newflag")] = true
+        XCTAssertEqual(wrangler[QueryItemKey<Bool>("newflag")], Optional(true))
         XCTAssertEqual(wrangler[QueryItemKey<Bool>("flag2")], Optional(true))
 
         XCTAssertEqual(wrangler[QueryItemKey<Bool>("nonexistant")], nil)
