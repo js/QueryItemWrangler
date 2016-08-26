@@ -91,6 +91,10 @@ components.queryItems = wrangler.queryItems
 * `Int?`
 * `Bool`
 
+### Assumptioms
+
+* keys are currently assumed to be unique in the query (eg, the behavior of a `ids=1&ids=2&ids=3` querystring is undefined within the QueryItemWrangler)
+
 ## Author
 
 QueryItemWrangler was created by [Johan Sørensen](http://johansorensen.com)

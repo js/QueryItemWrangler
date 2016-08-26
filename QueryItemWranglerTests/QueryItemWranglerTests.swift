@@ -90,6 +90,14 @@ class QueryItemWranglerTests: XCTestCase {
         XCTAssert(wrangler.queryItemForKey("num") == nil)
     }
 
+    func testUnsupportedEdgeCases() {
+        let url = NSURL(string: "https://example.com?ids=1&ids=2&ids=3")!
+        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+        let wrangler = QueryItemWrangler(items: components.queryItems)
+        // TODO: should we support a `QueryItemKey<[String]>("ids")`key type (and [Int])?
+        XCTAssertEqual(wrangler[QueryItemKey<String>("ids")], Optional("1"))
+    }
+
     // MARK - Collection conformance
 
     func testSequence() {
