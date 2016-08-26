@@ -89,4 +89,21 @@ class QueryItemWranglerTests: XCTestCase {
         wrangler["num"] = nil
         XCTAssert(wrangler.queryItemForKey("num") == nil)
     }
+
+    // MARK - Collection conformance
+
+    func testSequence() {
+        let wrangler = QueryItemWrangler(items: components.queryItems)
+        var keys: [String] = []
+        var values: [String] = []
+        for (key, value) in wrangler {
+            keys.append(key)
+            XCTAssertNotNil(value)
+            values.append(value!)
+        }
+        let expectedKeys = ["str", "num", "flag", "flag2"]
+        XCTAssertEqual(keys, expectedKeys)
+        let expectedValues = ["foo bar", "42", "1", "true"]
+        XCTAssertEqual(values, expectedValues)
+    }
 }

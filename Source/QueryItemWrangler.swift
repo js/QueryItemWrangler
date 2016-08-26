@@ -37,6 +37,7 @@ public struct QueryItemWrangler {
     }
 
     // MARK: Typed Subscripts
+    // (if swift supported generic subscripts these wouldn't be needed)
 
     public subscript(key: QueryItemKey<String>) -> String? {
         get { return get(key) }
@@ -65,6 +66,30 @@ extension QueryItemWrangler: Equatable {}
 
 public func ==(lhs: QueryItemWrangler, rhs: QueryItemWrangler) -> Bool {
     return lhs.queryItems == rhs.queryItems
+}
+
+extension QueryItemWrangler: SequenceType {
+    public func generate() -> Generator {
+        return Generator(items: queryItems)
+    }
+
+    public struct Generator: GeneratorType {
+        private var sequenceIndex = 0
+        let items: [NSURLQueryItem]
+
+        init(items: [NSURLQueryItem]) {
+            self.items = items
+        }
+
+        mutating public func next() -> (String, String?)? {
+            if sequenceIndex >= items.count {
+                return nil
+            }
+            defer { sequenceIndex += 1 }
+            let item = items[sequenceIndex]
+            return (item.name, item.value)
+        }
+    }
 }
 
 private extension QueryItemWrangler {
