@@ -10,34 +10,34 @@ import XCTest
 @testable import QueryItemWrangler
 
 class QueryItemWranglerTests: XCTestCase {
-    let url = NSURL(string: "https://example.com?str=foo%20bar&num=42&flag=1&flag2=true")!
-    var components: NSURLComponents!
+    let url = URL(string: "https://example.com?str=foo%20bar&num=42&flag=1&flag2=true")!
+    var components: URLComponents!
 
     override func setUp() {
         super.setUp()
-        components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+        components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
     }
 
     func testGetting() {
         let wrangler = QueryItemWrangler(items: components.queryItems)
 
-        XCTAssertEqual(wrangler.get(QueryItemKey<String>("str")), Optional("foo bar"))
-        XCTAssertEqual(wrangler.get(QueryItemKey<String>("nope")), nil)
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("str")), Optional("foo bar"))
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("nope")), nil)
 
-        XCTAssertEqual(wrangler.get(QueryItemKey<Int>("num")), Optional(42))
-        XCTAssertEqual(wrangler.get(QueryItemKey<Int>("nope")), nil)
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<Int>("num")), Optional(42))
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<Int>("nope")), nil)
 
-        XCTAssertEqual(wrangler.get(QueryItemKey<Bool>("flag")), Optional(true))
-        XCTAssertEqual(wrangler.get(QueryItemKey<Bool>("nope")), nil)
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<Bool>("flag")), Optional(true))
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<Bool>("nope")), nil)
     }
 
     func testSetting() {
         var wrangler = QueryItemWrangler(items: components.queryItems)
 
-        wrangler.set(QueryItemKey<String>("stringval"), value: "test")
-        XCTAssertEqual(wrangler.get(QueryItemKey<String>("stringval")), Optional("test"))
-        wrangler.set(QueryItemKey<String>("stringval"), value: nil)
-        XCTAssertEqual(wrangler.get(QueryItemKey<String>("stringval")), nil)
+        wrangler.set(key: QueryItemKey<String>("stringval"), value: "test")
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("stringval")), Optional("test"))
+        wrangler.set(key: QueryItemKey<String>("stringval"), value: nil)
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("stringval")), nil)
     }
 
     func testStringValues() {
@@ -78,7 +78,7 @@ class QueryItemWranglerTests: XCTestCase {
 
     func testQueryItemForKey() {
         let wrangler = QueryItemWrangler(items: components.queryItems)
-        let item = wrangler.queryItemForKey("num")
+        let item = wrangler.queryItem(key: "num")
         XCTAssert(item != nil)
         XCTAssertEqual(item!.name, "num")
         XCTAssertEqual(item!.value, Optional("42"))
@@ -87,12 +87,12 @@ class QueryItemWranglerTests: XCTestCase {
     func testNillingItemRemovesIt() {
         var wrangler = QueryItemWrangler(items: components.queryItems)
         wrangler["num"] = nil
-        XCTAssert(wrangler.queryItemForKey("num") == nil)
+        XCTAssert(wrangler.queryItem(key: "num") == nil)
     }
 
     func testUnsupportedEdgeCases() {
-        let url = NSURL(string: "https://example.com?ids=1&ids=2&ids=3")!
-        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+        let url = URL(string: "https://example.com?ids=1&ids=2&ids=3")!
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
         let wrangler = QueryItemWrangler(items: components.queryItems)
         // TODO: should we support a `QueryItemKey<[String]>("ids")`key type (and [Int])?
         XCTAssertEqual(wrangler[QueryItemKey<String>("ids")], Optional("1"))

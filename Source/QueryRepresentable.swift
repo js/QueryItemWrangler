@@ -43,7 +43,7 @@ extension Bool: QueryRepresentable {
     }
 }
 
-public struct QueryItemKey<Key where Key: QueryRepresentable> {
+public struct QueryItemKey<Key> where Key: QueryRepresentable {
     internal let key: String
 
     public init(_ key: String) {

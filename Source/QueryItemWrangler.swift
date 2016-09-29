@@ -9,18 +9,18 @@
 import Foundation
 
 public struct QueryItemWrangler {
-    public private(set) var queryItems: [NSURLQueryItem]
+    public fileprivate(set) var queryItems: [URLQueryItem]
 
-    public init(items: [NSURLQueryItem]?) {
+    public init(items: [URLQueryItem]?) {
         self.queryItems = items ?? []
     }
 
     public subscript(key: String) -> String? {
         get {
-            return queryItemForKey(key)?.value
+            return queryItem(key: key)?.value
         }
         set {
-            setQueryItemValue(key, value: newValue)
+            setQueryItem(key: key, value: newValue)
         }
     }
 
@@ -32,7 +32,7 @@ public struct QueryItemWrangler {
         self[key.key] = value?.queryItemValueRepresentation
     }
 
-    public func queryItemForKey(key: String) -> NSURLQueryItem? {
+    public func queryItem(key: String) -> URLQueryItem? {
         return queryItems.filter({ $0.name == key }).first
     }
 
@@ -40,24 +40,24 @@ public struct QueryItemWrangler {
     // (if swift supported generic subscripts these wouldn't be needed)
 
     public subscript(key: QueryItemKey<String>) -> String? {
-        get { return get(key) }
-        set { set(key, value: newValue) }
+        get { return get(key: key) }
+        set { set(key: key, value: newValue) }
     }
 
     public subscript(key: QueryItemKey<Int>) -> Int? {
-        get { return get(key) }
-        set { set(key, value: newValue) }
+        get { return get(key: key) }
+        set { set(key: key, value: newValue) }
     }
 
     public subscript(key: QueryItemKey<Bool>) -> Bool? {
-        get { return get(key) }
-        set { set(key, value: newValue) }
+        get { return get(key: key) }
+        set { set(key: key, value: newValue) }
     }
 }
 
 extension QueryItemWrangler: CustomStringConvertible {
     public var description: String {
-        let items = queryItems.map({ "\($0.name): \($0.value ?? "nil")" }).joinWithSeparator(", ")
+        let items = queryItems.map({ "\($0.name): \($0.value ?? "nil")" }).joined(separator: ", ")
         return "QueryItemWrangler{\(items)}"
     }
 }
@@ -68,16 +68,16 @@ public func ==(lhs: QueryItemWrangler, rhs: QueryItemWrangler) -> Bool {
     return lhs.queryItems == rhs.queryItems
 }
 
-extension QueryItemWrangler: SequenceType {
-    public func generate() -> Generator {
-        return Generator(items: queryItems)
+extension QueryItemWrangler: Sequence {
+    public func makeIterator() -> Iterator {
+        return Iterator(items: queryItems)
     }
 
-    public struct Generator: GeneratorType {
-        private var sequenceIndex = 0
-        let items: [NSURLQueryItem]
+    public struct Iterator: IteratorProtocol {
+        fileprivate var sequenceIndex = 0
+        let items: [URLQueryItem]
 
-        init(items: [NSURLQueryItem]) {
+        init(items: [URLQueryItem]) {
             self.items = items
         }
 
@@ -92,15 +92,15 @@ extension QueryItemWrangler: SequenceType {
     }
 }
 
-private extension QueryItemWrangler {
-    private mutating func setQueryItemValue(key: String, value: String?) {
+fileprivate extension QueryItemWrangler {
+    fileprivate mutating func setQueryItem(key: String, value: String?) {
         // NSURLQueryItem is immutable, so we have to remove & recreate when updating the value
-        if let item = queryItemForKey(key), let idx = queryItems.indexOf(item) {
-            queryItems.removeAtIndex(idx)
+        if let item = queryItem(key: key), let idx = queryItems.index(of: item) {
+            queryItems.remove(at: idx)
         }
 
         if let value = value {
-            let item = NSURLQueryItem(name: key, value: value)
+            let item = URLQueryItem(name: key, value: value)
             queryItems.append(item)
         }
     }
