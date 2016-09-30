@@ -53,6 +53,11 @@ public struct QueryItemWrangler {
         get { return get(key: key) }
         set { set(key: key, value: newValue) }
     }
+
+    public subscript(key: QueryItemKey<URL>) -> URL? {
+        get { return get(key: key) }
+        set { set(key: key, value: newValue) }
+    }
 }
 
 extension QueryItemWrangler: CustomStringConvertible {

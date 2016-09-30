@@ -43,6 +43,16 @@ extension Bool: QueryRepresentable {
     }
 }
 
+extension URL: QueryRepresentable {
+    public init?(queryItemValue: String) {
+        self.init(string: queryItemValue)
+    }
+
+    public var queryItemValueRepresentation: String {
+        return absoluteString
+    }
+}
+
 public struct QueryItemKey<Key> where Key: QueryRepresentable {
     internal let key: String
 

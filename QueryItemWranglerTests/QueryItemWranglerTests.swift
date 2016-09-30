@@ -10,7 +10,7 @@ import XCTest
 @testable import QueryItemWrangler
 
 class QueryItemWranglerTests: XCTestCase {
-    let url = URL(string: "https://example.com?str=foo%20bar&num=42&flag=1&flag2=true")!
+    let url = URL(string: "https://example.com?str=foo%20bar&num=42&flag=1&flag2=true&url=http%3A%2F%2Fexample.com")!
     var components: URLComponents!
 
     override func setUp() {
@@ -29,6 +29,10 @@ class QueryItemWranglerTests: XCTestCase {
 
         XCTAssertEqual(wrangler.get(key: QueryItemKey<Bool>("flag")), Optional(true))
         XCTAssertEqual(wrangler.get(key: QueryItemKey<Bool>("nope")), nil)
+
+        let url = URL(string: "http://example.com")!
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<URL>("url")), Optional(url))
+        XCTAssertEqual(wrangler.get(key: QueryItemKey<URL>("nope")), nil)
     }
 
     func testSetting() {
@@ -70,6 +74,18 @@ class QueryItemWranglerTests: XCTestCase {
         XCTAssertEqual(wrangler[QueryItemKey<Bool>("nonexistant")], nil)
     }
 
+    func testURLValue() {
+        var wrangler = QueryItemWrangler(items: components.queryItems)
+        XCTAssertEqual(wrangler["url"], Optional("http://example.com"))
+
+        let url = URL(string: "http://example.com")!
+        XCTAssertEqual(wrangler[QueryItemKey<URL>("url")], Optional(url))
+        let newUrl = URL(string: "http://example.com/another")!
+        wrangler[QueryItemKey<URL>("url")] = newUrl
+        XCTAssertEqual(wrangler[QueryItemKey<URL>("url")], Optional(newUrl))
+        XCTAssertEqual(wrangler[QueryItemKey<URL>("nonexistant")], nil)
+    }
+
     func testEquality() {
         let wrangler = QueryItemWrangler(items: components.queryItems)
         let other = QueryItemWrangler(items: components.queryItems)
@@ -109,9 +125,9 @@ class QueryItemWranglerTests: XCTestCase {
             XCTAssertNotNil(value)
             values.append(value!)
         }
-        let expectedKeys = ["str", "num", "flag", "flag2"]
+        let expectedKeys = ["str", "num", "flag", "flag2", "url"]
         XCTAssertEqual(keys, expectedKeys)
-        let expectedValues = ["foo bar", "42", "1", "true"]
+        let expectedValues = ["foo bar", "42", "1", "true", "http://example.com"]
         XCTAssertEqual(values, expectedValues)
     }
 }
