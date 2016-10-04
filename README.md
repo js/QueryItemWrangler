@@ -7,8 +7,8 @@ A type-safe and friendly Swift API for query items.
 Instead of jumping through these hoops:
 
 ```swift
-let url = NSURL(string: "https://example.com/things?id=42")!
-let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+let url = URL(string: "https://example.com/things?id=42")!
+let components = URLComponents(URL: url, resolvingAgainstBaseURL: true)!
 
 if let item =  components.queryItems?.filter({ $0.name == "id" }).first {
     if let value = item.value, let intValue = Int(value) {
@@ -40,8 +40,8 @@ While querystrings by nature are typed as strings, in practice we often want to 
 You'll initialize the `QueryItemWrangler` with an optional array of `NSURLQueryItem`:
 
 ```swift
-let url = NSURL(string: "https://example.com?str=foo%20bar&num=42&flag=1&flag2=true")!
-let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)!
+let url = URL(string: "https://example.com?str=foo%20bar&num=42&flag=1&flag2=true")!
+let components = URLComponents(URL: url, resolvingAgainstBaseURL: true)!
 var wrangler = QueryItemWrangler(items: components.queryItems)
 ```
 
@@ -85,11 +85,10 @@ components.queryItems = wrangler.queryItems
 
 `QueryItemKey` can be used as subscripting in `QueryItemWrangler` for the following types:
 
-* `String`
 * `String?`
-* `Int`
 * `Int?`
-* `Bool`
+* `Bool?`
+* `URL?`
 
 ### Assumptioms
 
