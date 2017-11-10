@@ -24,39 +24,17 @@ public struct QueryItemWrangler {
         }
     }
 
-    public func get<T>(key: QueryItemKey<T>) -> T? {
-        return self[key.key].flatMap({ T(queryItemValue: $0) })
-    }
-
-    public mutating func set<T>(key: QueryItemKey<T>, value: T?) {
-        self[key.key] = value?.queryItemValueRepresentation
-    }
-
     public func queryItem(key: String) -> URLQueryItem? {
         return queryItems.filter({ $0.name == key }).first
     }
 
-    // MARK: Typed Subscripts
-    // (if swift supported generic subscripts these wouldn't be needed)
-
-    public subscript(key: QueryItemKey<String>) -> String? {
-        get { return get(key: key) }
-        set { set(key: key, value: newValue) }
-    }
-
-    public subscript(key: QueryItemKey<Int>) -> Int? {
-        get { return get(key: key) }
-        set { set(key: key, value: newValue) }
-    }
-
-    public subscript(key: QueryItemKey<Bool>) -> Bool? {
-        get { return get(key: key) }
-        set { set(key: key, value: newValue) }
-    }
-
-    public subscript(key: QueryItemKey<URL>) -> URL? {
-        get { return get(key: key) }
-        set { set(key: key, value: newValue) }
+    public subscript<T>(key: QueryItemKey<T>) -> T? where T: QueryRepresentable {
+        get {
+            return self[key.key].flatMap({ T(queryItemValue: $0) })
+        }
+        set {
+            self[key.key] = newValue?.queryItemValueRepresentation
+        }
     }
 }
 

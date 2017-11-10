@@ -18,32 +18,6 @@ class QueryItemWranglerTests: XCTestCase {
         components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
     }
 
-    func testGetting() {
-        let wrangler = QueryItemWrangler(items: components.queryItems)
-
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("str")), Optional("foo bar"))
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("nope")), nil)
-
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<Int>("num")), Optional(42))
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<Int>("nope")), nil)
-
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<Bool>("flag")), Optional(true))
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<Bool>("nope")), nil)
-
-        let url = URL(string: "http://example.com")!
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<URL>("url")), Optional(url))
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<URL>("nope")), nil)
-    }
-
-    func testSetting() {
-        var wrangler = QueryItemWrangler(items: components.queryItems)
-
-        wrangler.set(key: QueryItemKey<String>("stringval"), value: "test")
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("stringval")), Optional("test"))
-        wrangler.set(key: QueryItemKey<String>("stringval"), value: nil)
-        XCTAssertEqual(wrangler.get(key: QueryItemKey<String>("stringval")), nil)
-    }
-
     func testStringValues() {
         var wrangler = QueryItemWrangler(items: components.queryItems)
         XCTAssertEqual(wrangler["str"], Optional("foo bar"))
