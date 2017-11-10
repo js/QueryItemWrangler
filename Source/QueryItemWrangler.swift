@@ -24,11 +24,11 @@ public struct QueryItemWrangler {
         }
     }
 
-    public func get<T: QueryRepresentable>(key: QueryItemKey<T>) -> T? {
+    public func get<T>(key: QueryItemKey<T>) -> T? {
         return self[key.key].flatMap({ T(queryItemValue: $0) })
     }
 
-    public mutating func set<T: QueryRepresentable>(key: QueryItemKey<T>, value: T?) {
+    public mutating func set<T>(key: QueryItemKey<T>, value: T?) {
         self[key.key] = value?.queryItemValueRepresentation
     }
 
